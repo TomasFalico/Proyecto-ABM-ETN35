@@ -2,23 +2,30 @@ import tkinter as tk
 import tkinter.font as tkfont
 from tkinter import ttk
 
-
+#Clase que se encarga del apartado visual del programa
 class Panel():
+
+    # Metodo de instacia de la clase Panel
     def __init__(self, ventana, objeto_modelo):
 
+        # Creo una variable de instancia root y la cargo con nuestro objeto tk "ventana" que determina la ventana sobore la que estamos trabajando
         self.root = ventana
 
-        # Determinando el titulo del programa
-        self.root.title("Entrega Final ABM")
+        # Configuro el titulo de la ventana sobre la que trabajo
+        self.root.title("Proyecto Analisis de Sistema/POO")
 
+        # Este metodo hace que el tamaño de la ventana no se pueda modificar en ninguno de los dos ejes
         self.root.resizable(False, False)
 
-        # Determinando el color de fondo del programa
+        # Declaro y cargo una variable para almacenar el color de fondo del sistema
         self.color_fondo = tk.StringVar()
-        self.color_fondo.set("#b3cde0")  # F0F2FF
+        self.color_fondo.set("#b3cde0") 
+
+        # Configuro el color de fondo de la ventana utilizando la variable 
         self.root.configure(bg=self.color_fondo.get())
 
         # Declaracion de variables a utilizar dentro del sistema
+        # Cada una de estas variables va a ser referenciada dentro de un campo de texto/Entry 
         self.var_titulo = tk.StringVar()
         self.var_precio = tk.StringVar()
         self.var_editorial = tk.StringVar()
@@ -30,25 +37,32 @@ class Panel():
         # Declaro los frames donde van a ir ubicado los widgets del sistema
         self.frame_central = tk.Frame(
             self.root, bg=self.color_fondo.get())
+
         self.frame_entry = tk.Frame(
             self.frame_central, bg=self.color_fondo.get())
+
         self.frame_entryprecio = tk.Frame(
             self.frame_entry, bg=self.color_fondo.get())
+
         self.frame_botones = tk.Frame(
             self.frame_central, bg=self.color_fondo.get())
+
         self.frame_tree = tk.Frame(
             self.frame_central, bg=self.color_fondo.get())
+
         self.frame_buscar = tk.Frame(
             self.frame_central, bg=self.color_fondo.get())
 
-        # Nombre del sistema
+        # Declaracion de las etiquetas que componen al sector inicial de nuestro programa
+        # El primer parametro es la ubicacion en donde se va a pocisionar el elemento
+        # El parametro "bg" determina el color de fondo del elemento
+        # El parametro "text" determina el texto que va a tener nuestro elemento
+        # El parametro "font" indica la fuente de este elemento
         self.sistema_label = tk.Label(
             self.root,
             bg=self.color_fondo.get(),
-            text="Sistema de stock - LIBRERIA",
+            text="Sistema ABM Libreria",
             font=tkfont.Font(family="Times", size=23),
-            fg="#333333",
-            justify="right",
         )
 
         self.titulo_label = tk.Label(
@@ -56,38 +70,27 @@ class Panel():
             bg=self.color_fondo.get(),
             text="Titulo",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
         self.editorial_label = tk.Label(
             self.frame_entry,
             bg=self.color_fondo.get(),
-            anchor="e",
-            font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
             text="Editorial",
+            font=tkfont.Font(family="Times", size=13),
         )
 
         self.simbolopeso_label = tk.Label(
             self.frame_entryprecio,
             bg=self.color_fondo.get(),
             text="$",
-            anchor="e",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
         self.precio_label = tk.Label(
             self.frame_entryprecio,
             bg=self.color_fondo.get(),
             text="Precio",
-            anchor="e",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
         self.genero_label = tk.Label(
@@ -95,8 +98,6 @@ class Panel():
             bg=self.color_fondo.get(),
             text="Genero",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
         self.autor_label = tk.Label(
@@ -104,53 +105,117 @@ class Panel():
             bg=self.color_fondo.get(),
             text="Autor",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
         # -------- ENTRYS PRINCIPALES ----------
 
+
+        # Declaracion de las campos de texto que componen al sector inicial de nuestro programa
+        # El primer parametro es la ubicacion en donde se va a pocisionar el elemento
+        # El parametro "textvariable" determina la variable en donde se va a almacenar la informacion de nuestro Entry
+        # El parametro "font" indica la fuente de este elemento
         self.titulo_entry = tk.Entry(
             self.frame_entry,
             textvariable=self.var_titulo,
             font=tkfont.Font(family="Times", size=13),
-            borderwidth="1px",
-            fg="#333333",
         )
 
         self.precio_entry = tk.Entry(
             self.frame_entry,
             textvariable=self.var_precio,
-            borderwidth="1px",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
         )
 
         self.editorial_entry = tk.Entry(
             self.frame_entry,
             textvariable=self.var_editorial,
-            borderwidth="1px",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
         )
 
         self.gen_entry = tk.Entry(
             self.frame_entry,
             textvariable=self.var_genero,
-            borderwidth="1px",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
         )
 
         self.autor_entry = tk.Entry(
             self.frame_entry,
             textvariable=self.var_autor,
-            borderwidth="1px",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
         )
 
         # ---- FIN ENTRYS -----
+
+
+        # Botones del sector principal
+        #El primer parametro de cada boton determina su ubicacion 
+        #El parametro "state" determina si el boton es clickeable o no
+
+
+        #Boton Eliminar
+        #Llama a la funcion "funcion_baja" que crearemos mas adelante en el modulo "modelo"
+        self.borrar_boton = tk.Button(
+            self.frame_botones,
+            command=lambda: objeto_modelo.funcion_baja(
+                self.var_id.get(),
+                self.upd_boton,
+                self.borrar_boton,
+                self.tree,
+                self.var_titulo,
+                self.var_precio,
+                self.var_editorial,
+                self.var_genero,
+                self.var_autor,
+                self.var_busqueda,
+            ),
+            font=tkfont.Font(family="Times", size=13),
+            text="Eliminar",
+            state="disabled",
+        )
+
+        # Boton guardar
+        # Llama a la funcion "funcion_alta" que crearemos mas adelante en el modulo "modelo"
+        self.g_boton = tk.Button(
+            self.frame_botones,
+            command=lambda: objeto_modelo.funcion_alta(
+                self.var_titulo,
+                self.var_precio,
+                self.var_editorial,
+                self.var_genero,
+                self.var_autor,
+                self.upd_boton,
+                self.borrar_boton,
+                self.var_busqueda,
+                self.tree,
+            ),
+            font=tkfont.Font(family="Times", size=13),
+            fg="#000000",
+            justify="center",
+            text="Guardar",
+        )
+
+        # Boton guardar
+        # Llama a la funcion "funcion_alta" que crearemos mas adelante en el modulo "modelo"
+        self.upd_boton = tk.Button(
+            self.frame_botones,
+            command=lambda: objeto_modelo.funcion_modificar(
+                self.var_id,
+                self.var_titulo,
+                self.var_precio,
+                self.var_editorial,
+                self.var_genero,
+                self.var_autor,
+                self.upd_boton,
+                self.borrar_boton,
+                self.var_busqueda,
+                self.tree,
+            ),
+            font=tkfont.Font(family="Times", size=13),
+            fg="#000000",
+            justify="center",
+            text="Actualizar",
+            state="disabled",
+        )
 
         # ---- POCISIONAMIENTO DE WIDGETS EN LA GRILLA ----
 
@@ -180,16 +245,34 @@ class Panel():
         self.autor_label.grid(row=5, column=0, pady=5)
         self.autor_entry.grid(row=5, column=1)
 
+        self.g_boton.grid(row=0, column=0, padx=30, pady=10)
+        self.upd_boton.grid(row=0, column=1, padx=10, pady=10)
+        self.borrar_boton.grid(row=0, column=2, padx=30, pady=10)
+
+
+        # ---- BOTONES PRINCIPALES -----
+
+
+
+
         """---------------------------------------
         LISTADO TREE VIEW DE LA INFORMACIÓN
         ---------------------------------------"""
 
+        #Declaro un array con nombres para identificar a cada columna 
         self.columnas = ("titulo", "precio", "editorial",
                          "genero", "autor", "fecha_upd")
 
+        #Creo el listado treeview y le paso como parametros la ubicacion en donde va a estar pocisionado
+        #y el listado de las columnas
         self.tree = ttk.Treeview(self.frame_tree, columns=self.columnas)
 
+        #Declaro los heading o encabezados de la lista y le asigno un nombre
         self.tree.heading("#0", text="ID")
+        #Modifico la configuracion de la columna correspondiente a cada encabezado  
+        #-minwidth determina el ancho minimo que puede tener la columna  
+        #-width determina el ancho predeterminado de la columna
+        #-anchor determina como ubico el texto dentro de la columna, en este caso el texto estaria centrado
         self.tree.column("#0", minwidth=0, width=40, anchor="center")
 
         self.tree.heading("titulo", text="Titulo")
@@ -209,9 +292,11 @@ class Panel():
 
         self.tree.heading("fecha_upd", text="Ult. Actualizacion")
         self.tree.column("fecha_upd", minwidth=0, width=120, anchor="center")
+
+        #Pocisiono el listado tree dentro de la grilla 
         self.tree.grid(row=0, column=0, padx=30)
 
-        # funcion que se triggerea cuando hago click en un item del treeview
+        # Evento que se acciona cuando hago click en un item del treeview
         self.tree.bind(
             "<<TreeviewSelect>>",
             lambda event: objeto_modelo.select_item(
@@ -227,98 +312,33 @@ class Panel():
             ),
         )
 
-        # Llamo a funcion para popular la lista
+        # Llamo a funcion para popular la lista 
+        # Esta funcion solo se llama una vez 
         objeto_modelo.cargar_listado(self.tree, self.var_busqueda)
 
         """------------------------------------------
         FIN DE TREE VIEW
         ------------------------------------------"""
 
-        # ---- BOTONES PRINCIPALES -----
-
-        # Boton Elimnar
-        self.borrar_boton = tk.Button(
-            self.frame_botones,
-            command=lambda: objeto_modelo.funcion_baja(
-                self.var_id.get(),
-                self.upd_boton,
-                self.borrar_boton,
-                self.tree,
-                self.var_titulo,
-                self.var_precio,
-                self.var_editorial,
-                self.var_genero,
-                self.var_autor,
-                self.var_busqueda,
-            ),
-            font=tkfont.Font(family="Times", size=13),
-            fg="#000000",
-            justify="center",
-            text="Eliminar",
-            state="disabled",
-        )
-
-        # Boton guardar
-        self.g_boton = tk.Button(
-            self.frame_botones,
-            command=lambda: objeto_modelo.funcion_alta(
-                self.var_titulo,
-                self.var_precio,
-                self.var_editorial,
-                self.var_genero,
-                self.var_autor,
-                self.upd_boton,
-                self.borrar_boton,
-                self.var_busqueda,
-                self.tree,
-            ),
-            font=tkfont.Font(family="Times", size=13),
-            fg="#000000",
-            justify="center",
-            text="Guardar",
-        )
-
-        # Boton Actualizar
-        self.upd_boton = tk.Button(
-            self.frame_botones,
-            command=lambda: objeto_modelo.funcion_modificar(
-                self.var_id,
-                self.var_titulo,
-                self.var_precio,
-                self.var_editorial,
-                self.var_genero,
-                self.var_autor,
-                self.upd_boton,
-                self.borrar_boton,
-                self.var_busqueda,
-                self.tree,
-            ),
-            font=tkfont.Font(family="Times", size=13),
-            fg="#000000",
-            justify="center",
-            text="Actualizar",
-            state="disabled",
-        )
 
         # ---- BUSQUEDA POR TITULO ----
 
+        #Label "Buscar por titulo" 
         self.buscar_label = tk.Label(
             self.frame_buscar,
             bg=self.color_fondo.get(),
             text="Buscar por titulo",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
-            justify="right",
         )
 
+        #Campo de texto para ingresar titulo utilizado en el filtro
         self.buscar_entry = tk.Entry(
             self.frame_buscar,
             textvariable=self.var_busqueda,
-            borderwidth="1px",
             font=tkfont.Font(family="Times", size=13),
-            fg="#333333",
         )
 
+        #Boton de busqueda: muestra solo los registros que contengan el texto del entry "buscar_entry" dentro del listado de registros
         self.busq_boton = tk.Button(
             self.frame_buscar,
             command=lambda: objeto_modelo.cargar_listado(
@@ -326,11 +346,10 @@ class Panel():
                 self.var_busqueda,
             ),
             font=tkfont.Font(family="Times", size=13),
-            fg="#000000",
-            justify="center",
             text="Buscar",
         )
 
+        #Boton borrar filtro: vacia campos de texto y reinicia el listado de registros
         self.b_filtro_boton = tk.Button(
             self.frame_buscar,
             command=lambda: objeto_modelo.cargar_listado(
@@ -339,15 +358,10 @@ class Panel():
                 True,
             ),
             font=tkfont.Font(family="Times", size=13),
-            fg="#000000",
-            justify="center",
             text="Borrar filtro",
         )
 
-        self.g_boton.grid(row=0, column=0, padx=30, pady=10)
-        self.upd_boton.grid(row=0, column=1, padx=10, pady=10)
-        self.borrar_boton.grid(row=0, column=2, padx=30, pady=10)
-
+        #Pocisionamiento de la etiquetas, campos de entrada y los botones del sector busqueda
         self.buscar_label.grid(row=8, column=0, padx=10, pady=10)
         self.buscar_entry.grid(row=8, column=1, pady=10)
 
