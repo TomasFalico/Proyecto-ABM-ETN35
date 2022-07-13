@@ -1,30 +1,47 @@
+#Base de datos que utilizo para almancenar registros
 import sqlite3
+#Libreria que permite utilizar expresiones regulares para validar informacion
 import re
+#Libreria que utilizo para conseguir la fecha y hora exacta al momento de registrar cambios en la base de datos
 from datetime import datetime
+#Libreria utilizada para mostrar popups o mensajes de alerta a la hora de realizar algun cambio en el registro de datos
 from tkinter import messagebox
 
 
+#Clase ABMC: maneja la logica relacionada a las funciones de Alta, Baja, MOdificacion y Consulta del sistema
 class Abmc():
+    #Metodo de instancia
     def __init__(self,):
         # Matchea con lineas de texto que solo tengan numeros entre 0  y 9
         self.regex_numeros = "^[0-9]+$"
 
-        # Matchea con lineas de texto que solo tengan caracteres y con una longitud entre 4 y 60 caracteres
-        self.regex_palabra = r"^[.,a-zA-Z\s]{2,60}$"
+        # Matchea con lineas de texto que solo tengan caracteres y con una longitud entre 1  y 60 caracteres
+        self.regex_palabra = r"^[.,a-zA-Z\s]{1,60}$"
 
-        # Matchea con lineas de texto que tengan caracteres o numeros y con una longitud entre 4 y 60 caracteres
-        self.regex_vacio = r"^[,.a-zA-Z0-9_\s]{2,60}$"
+        # Matchea con lineas de texto que tengan caracteres o numeros y con una longitud entre 1 y 60 caracteres
+        self.regex_vacio = r"^[,.a-zA-Z0-9_\s]{1,60}$"
 
     # --------FUNCIONES--------------
 
+    #Funcion que devuelve una conexion a la base de datos
     def crear_db(self,):
+        #El metodo "connect" de sqlite3 me permite conectarme a una base de datos con el nombre que es enviado como parametroo
+        #En el caso de que haya una base de datos con ese nombre en el mismo directorio que el archivo, este metodo nos conecta a esa base de datos 
+        #En el caso de que NO haya una base de datos con ese nombre, este metodo crea la base de datos y luegos nos conecta
         basedatos = sqlite3.connect("libreria.db")
+        #Devuelvo la referencia a la base de datos
         return basedatos
 
+    #Funcion para crear la tabla de registros de libros en nuestra base de datos
+    #Toma como parametro a la base de datos que estamos utilizando
     def crear_tabla_libro(self, basedatos):
+
+        #Consigo la referencia a la base de datos utilizando la funcion de conexion
         basedatos = self.crear_db()
+        #Creo un objeto cursor que me permite ejecutar sentencias SQL en la base de datos 
         cursorbdd = basedatos.cursor()
 
+        #Defino una sentencia SQL que me permite crear la tabla "libros" si es que no fue creada con anterioridad
         sql = (
             "CREATE TABLE IF NOT EXISTS libros(id INTEGER PRIMARY KEY AUTOINCREMENT,"
             " titulo TEXT,"
@@ -35,37 +52,44 @@ class Abmc():
             " fecha_mod DATETIME)"
         )
 
+        #Ejecuta la sentencia utilizando el cursor 
         cursorbdd.execute(sql)
 
+        #Utilizo el metodo commit para guardar los cambios realizados en la base de datos
         basedatos.commit()
 
     # Funcion para determinar si los botones de actualizacion y borrado se encuentran activos
-
+    # Esta funcion toma como parametros a los objetos boton de actualizacion y boton de borrado; tambien toma un parametro booleano deshabilitar
     def toggle_botones(self, upd_boton, borrar_boton, deshabilitar):
+        #Si dehabilitar es "True", deshabilitamos los botones de actualizacion y borrado 
         if deshabilitar:
+            #"state" es un atributo de los botones de Tkinter que determina si el boton es clickeable o no
             upd_boton["state"] = "disabled"
             borrar_boton["state"] = "disabled"
+        #En el caso de que deshabilitar sea "False", hago que los botones sean clickeables
         else:
             upd_boton["state"] = "normal"
             borrar_boton["state"] = "normal"
 
     # Funcion para vaciar todos los campos de entrada luego de realizar una alta, baja o modificacion
-
+    # Toma como parametro a los entry del sector principal del programa
     def vaciar_entradas(self, titulo, precio, editorial, genero, autor):
+        #El metodo "set("") nos permite vaciar cada uno de los campos de entrada
         titulo.set("")
         precio.set("")
         editorial.set("")
         genero.set("")
         autor.set("")
 
-    # Funcion para rellena los entry con datos del item seleccionado en treeview
 
+    # Funcion para rellena los entry con datos del item seleccionado en treeview
+    # Toma como parametro al objeto listado, los campos de entrada y los botones de borrar y actualizar
     def select_item(
         self, lista, id, titulo, precio, editorial, genero, autor, borrar_boton, upd_boton
     ):
 
         try:
-            # Los siguientes datos salen del diccionario donde se guardan los valores del item que seleccione
+            # Rellenamos los campos de entrada con los valores del item seleccionado dentro de la lista
             id.set(lista["text"])
             titulo.set(lista["values"][0])
             precio.set(lista["values"][1].lstrip("$"))
@@ -73,6 +97,7 @@ class Abmc():
             genero.set(lista["values"][3])
             autor.set(lista["values"][4])
         except IndexError:
+            #En el caso de que haya un error a la hora de conseguir los valores del item, se sale de la funcion
             return
 
         # Habilito los botones de actualizar y eliminar ya que estoy seleccionando un registro
