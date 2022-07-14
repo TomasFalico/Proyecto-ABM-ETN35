@@ -104,7 +104,7 @@ class Abmc():
         self.toggle_botones(upd_boton, borrar_boton, False)
 
     # Funcion para validar los campos de entrada de dato teniendo en cuenta diferentes criterios
-
+    # Toma como parametro a los campos de entrada del sector principal
     def validar_entrada(self, titulo, precio, editorial, genero, autor):
 
         # Cargo los patrones de regex que voy a usar para validar cada campo
@@ -115,7 +115,11 @@ class Abmc():
         # Variable en la que concateno cada campo que tenga un error
         errores = ""
 
+        #el metodo fullmatch de la libreria regex permite comparar un string con una expresion regular
+        #En este caso estoy verificando si mi string no cumple con las condiciones de la expresion regular
         if not re.fullmatch(patron_vacio, titulo.get()):
+            #En el caso de que no cumpla con esa condicion, agregamos el nombre del campo de entrada a nuestro 
+            #string de errores
             errores += "\n-Titulo"
         if not re.fullmatch(patron_num, precio.get()):
             errores += "\n-Precio"
@@ -128,6 +132,7 @@ class Abmc():
 
         # Si la variable error no esta vacia, muestra un mensaje indicando los campos que no estan ingresados correctamente
         if errores != "":
+            #El metodo showerror de la libreria messagebox permite mostrar una ventana emergente con los parametros ingresados
             messagebox.showerror(
                 title="Error",
                 message="Los siguientes campos no se ingresaron correctamente: " + errores,
