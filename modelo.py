@@ -34,7 +34,7 @@ class Abmc():
 
     # Funcion para crear la tabla de registros de libros en nuestra base de datos
     # Toma como parametro a la base de datos que estamos utilizando
-    def crear_tabla_libro(self, basedatos):
+    def crear_tabla_libro(self, ):
 
         # Consigo la referencia a la base de datos utilizando la funcion de conexion
         basedatos = self.crear_db()
